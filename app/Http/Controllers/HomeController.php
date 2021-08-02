@@ -22,35 +22,39 @@ class HomeController extends Controller
         if($request->file('imported-file')) {
             $path = $request->file('imported-file')->getRealPath();
 
+            /*
+             * Allowed file types extension ( CSV,XLS, XLSX, TSV)
+            $data = Excel::toArray('', $path, null, \Maatwebsite\Excel\Excel::CSV);
+            $data = Excel::toArray('', $path, null, \Maatwebsite\Excel\Excel::XLSX);
+            $data = Excel::toArray('', $path, null, \Maatwebsite\Excel\Excel::XLS);
+            $data = Excel::toArray('', $path, null, \Maatwebsite\Excel\Excel::TSV);
+            $data = Excel::toArray('', $path, null, \Maatwebsite\Excel\Excel::CSV);
+            */
+
             //TODO Make Validation type of extension file
             $data = Excel::toArray('', $path, null, \Maatwebsite\Excel\Excel::CSV)[0];
 
-            /*
-            $data = Excel::toArray('', $path, null, \Maatwebsite\Excel\Excel::CSV);
-            Excel::toArray('', $path, null, \Maatwebsite\Excel\Excel::XLSX);
-            Excel::toArray('', $path, null, \Maatwebsite\Excel\Excel::XLS);
-            Excel::toArray('', $path, null, \Maatwebsite\Excel\Excel::TSV);
-            Excel::toArray('', $path, null, \Maatwebsite\Excel\Excel::CSV);
-            */
+
 
             if(!empty($data)) {
 
                 $dataImported= "";
                 for($i=0;$i<count($data);$i++) {
-                    $field0 = $data[$i][0]; // shortSiteName
-                    $field1 = $data[$i][1]; // domain
-                    $field2 = $data[$i][2]; // siteID
+                    $field0 = $data[$i][0]; // movieID
+                    //$field1 = $data[$i][1]; //
+                    $field2 = $data[$i][2]; // addedUserID
                     //$field3 = $data[$i][3];
-                    //$field4 = $data[$i][4];
-                    //$field5 = $data[$i][5];
+                    $field4 = $data[$i][4]; // updateUserID
+                    $field5 = $data[$i][5]; // siteID
                     //$field6 = $data[$i][6];
-                    $field7 = $data[$i][7]; // tier
+                    //$field7 = $data[$i][7]; // tier
                     //$field8 = $data[$i][8];
                     //$field9 = $data[$i][9];
                     //$field10 = $data[$i][10];
                     //$field11 = $data[$i][11];
+                    $field29  = $data[$i][29];
 
-
+                    $dataImported .= $this->prepareMoviesDataArray($field0, $field2, $field4, $field5, $field29);
                     //$dataImported .= $this->updateStatusLost($field0);
                     //$dataImported .= $this->UpdatesQOH($field0, $field1);
                     //$dataImported .= $this->InsertHistoryQOH($field0, $field1);
@@ -71,33 +75,12 @@ class HomeController extends Controller
                     //$dataImported .= $this->updatesPriceHTLKEYS($field3, $field4, $field6, $field7, $bank='trc');
                     //$dataImported .= $this->prepareDeletes($field4);
                     //$dataImported .= $this->prepareUpdatesBarcodes2($field1);
-                    $dataImported .= $this->updateSitesTier($data[$i][2], $data[$i][7]);
+                    //$dataImported .= $this->updateSitesTier($data[$i][2], $data[$i][7]);
                     //die();
 
                 }
 
-                /*
-                $duplicates = [];
-                for ($i=0; $i < count($data); $i++) {
-                    $item_id = $data[$i][1]; // item_id
-                    $action = $data[$i][2]; // action
-                    $notes = $data[$i][8]; // action
-                    $date_at = $data[$i][10]; // date_at
-                    for( $j=$i; $j < count($data); $j++) {
-                        if ( ($i != $j) && ($item_id == $data[$j][1])
-                             && ($action == $data[$j][2])
-                             && ($notes == $data[$j][8])
-                             && ($date_at == $data[$j][10]) ){
-                            $duplicates[] = [
-                                'data 1' => $data[$i],
-                                'data 2' => $data[$j]
-                            ];
-                        }
-
-                    }
-                }*/
-
-                //return Excel::download(collect($duplicates), 'disney.xlsx');
+                //return Excel::download(collect($duplicates), 'export_file.xlsx');
 
                 echo $dataImported;
 
@@ -108,6 +91,45 @@ class HomeController extends Controller
     }
 
 
+
+    /**
+     * Build a large Array , based on CSV Data information
+     */
+    public function prepareMoviesDataArray($field0, $field2, $field4, $field5, $field29) {
+        return "[<br>
+                    'movieID' => {$field0},<br>
+                    'addedUserID' => {$field2},<br>
+                    'updateUserID' => {$field4},<br>
+                    'siteID' => {$field5},<br>
+                    'movieStatus' => 'active',<br>
+                    'master_status' => 1,<br>
+                    'publishedDate' => '2017-02-06 11:00:00', <br>
+                    'isPublished' => 1,<br>
+                    'loc' => 'web1',<br>
+                    'verified' => 1,<br>
+                    'releaseDate' => '2017-02-06 11:00:00',<br>
+                    'defaultPrice' => 1,<br>
+                    'movieFilename' => {$field29},<br>
+                    'modelID' => Model::where('slug', '{$field29}')->first()->modelID<br>
+                ],
+                ';<br>";
+    }
+
+
+
+    /**
+     * UPDATE Mysql , Makes individual list of UPDATE QUERYS For update Inventory
+     */
+    public function getModelsFromMovies($movieID) {
+        $sampleSQL= "SELECT * FROM `movies_models`
+                WHERE movieID IN (12297, 12298, 12299) ;";
+        return "{$movieID},";
+    }
+
+
+    /**
+     * UPDATE Mysql , Makes individual list of UPDATE QUERYS For update Inventory
+     */
     public function prepareUpdatesHistory($qoh, $item_name) {
         return "UPDATE akc_qb.items_working SET QOH = '{$qoh}'
                 WHERE FullName = '{$item_name}';<br>";
