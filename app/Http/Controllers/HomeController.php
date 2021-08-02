@@ -28,10 +28,9 @@ class HomeController extends Controller
             $data = Excel::toArray('', $path, null, \Maatwebsite\Excel\Excel::XLSX);
             $data = Excel::toArray('', $path, null, \Maatwebsite\Excel\Excel::XLS);
             $data = Excel::toArray('', $path, null, \Maatwebsite\Excel\Excel::TSV);
-            $data = Excel::toArray('', $path, null, \Maatwebsite\Excel\Excel::CSV);
             */
 
-            //TODO Make Validation type of extension file
+            // Indicate Type of Excel File Extension , CSV
             $data = Excel::toArray('', $path, null, \Maatwebsite\Excel\Excel::CSV)[0];
 
 
@@ -39,43 +38,44 @@ class HomeController extends Controller
             if(!empty($data)) {
 
                 $dataImported= "";
+                // Looping Row by Row
                 for($i=0;$i<count($data);$i++) {
-                    $field0 = $data[$i][0]; // movieID
-                    //$field1 = $data[$i][1]; //
-                    $field2 = $data[$i][2]; // addedUserID
-                    //$field3 = $data[$i][3];
-                    $field4 = $data[$i][4]; // updateUserID
-                    $field5 = $data[$i][5]; // siteID
-                    //$field6 = $data[$i][6];
-                    //$field7 = $data[$i][7]; // tier
-                    //$field8 = $data[$i][8];
-                    //$field9 = $data[$i][9];
-                    //$field10 = $data[$i][10];
-                    //$field11 = $data[$i][11];
-                    $field29  = $data[$i][29];
+                    $column0 = $data[$i][0]; // movieID
+                    //$column1 = $data[$i][1];
+                    $column2 = $data[$i][2]; // addedUserID
+                    //$column3 = $data[$i][3];
+                    $column4 = $data[$i][4]; // updateUserID
+                    $column5 = $data[$i][5]; // siteID
+                    //$column6 = $data[$i][6];
+                    //$column7 = $data[$i][7];
+                    //$column8 = $data[$i][8];
+                    //$column9 = $data[$i][9];
+                    //$column10 = $data[$i][10];
+                    //$column11 = $data[$i][11];
+                    $column29  = $data[$i][29]; // movieFilename
 
-                    $dataImported .= $this->prepareMoviesDataArray($field0, $field2, $field4, $field5, $field29);
-                    //$dataImported .= $this->getModelsFromMoviesID($field0);
-                    //$dataImported .= $this->updateStatusLost($field0);
-                    //$dataImported .= $this->UpdatesQOH($field0, $field1);
-                    //$dataImported .= $this->InsertHistoryQOH($field0, $field1);
-                    //$dataImported .= $this->prepareInsertsIfnotExist($field1);
-                    //$dataImported .= $this->prepareUpdates($field0,$field1,$field2);
-                    //$dataImported .= $this->prepareInserts($field0, $field1, $field2);
-                    //$dataImported .= $this->getqtyItems($field0);
-                    //$dataImported .= $this->prepareUpdatesHistory($field5,$field3);
+                    $dataImported .= $this->prepareMoviesDataArray($column0, $column2, $column4, $column5, $column29);
+                    //$dataImported .= $this->getModelsFromMoviesID($column0);
+                    //$dataImported .= $this->updateStatusLost($column0);
+                    //$dataImported .= $this->UpdatesQOH($column0, $column1);
+                    //$dataImported .= $this->InsertHistoryQOH($column0, $column1);
+                    //$dataImported .= $this->prepareInsertsIfnotExist($column1);
+                    //$dataImported .= $this->prepareUpdates($column0,$column1,$column2);
+                    //$dataImported .= $this->prepareInserts($column0, $column1, $column2);
+                    //$dataImported .= $this->getqtyItems($column0);
+                    //$dataImported .= $this->prepareUpdatesHistory($column5,$column3);
                     //$dataImported .= prepareUpdatesQOH($item, $qty);
-                    //$dataImported .= $this->prepareInsertHistoryQOH($field0, $field2);
-                    //$dataImported .= $this->prepareUpdatesQOH($field0, $field2);
-                    //$dataImported .= $this->UpdatesPriceD($field0, $field3);
-                    //$dataImported .= $this->InsertVehicleItemCount($field10, $field8);
-                    //$dataImported .= $this->InsertPackageScan($field0, $field3);
-                    //$dataImported .= $this->InsertLCPull($field0, $field3);
-                    //$dataImported .= $this->InsertNewPriceList($field3, $field4, $field5, $field6, $field7);
-                    //$dataImported .= $this->prepareUpdatesBarcodes($field0, $field1);
-                    //$dataImported .= $this->updatesPriceHTLKEYS($field3, $field4, $field6, $field7, $bank='trc');
-                    //$dataImported .= $this->prepareDeletes($field4);
-                    //$dataImported .= $this->prepareUpdatesBarcodes2($field1);
+                    //$dataImported .= $this->prepareInsertHistoryQOH($column0, $column2);
+                    //$dataImported .= $this->prepareUpdatesQOH($column0, $column2);
+                    //$dataImported .= $this->UpdatesPriceD($column0, $column3);
+                    //$dataImported .= $this->InsertVehicleItemCount($column10, $column8);
+                    //$dataImported .= $this->InsertPackageScan($column0, $column3);
+                    //$dataImported .= $this->InsertLCPull($column0, $column3);
+                    //$dataImported .= $this->InsertNewPriceList($column3, $column4, $column5, $column6, $column7);
+                    //$dataImported .= $this->prepareUpdatesBarcodes($column0, $column1);
+                    //$dataImported .= $this->updatesPriceHTLKEYS($column3, $column4, $column6, $column7, $bank='trc');
+                    //$dataImported .= $this->prepareDeletes($column4);
+                    //$dataImported .= $this->prepareUpdatesBarcodes2($column1);
                     //$dataImported .= $this->updateSitesTier($data[$i][2], $data[$i][7]);
                     //die();
 
@@ -96,12 +96,12 @@ class HomeController extends Controller
     /**
      * Build a large Array , based on CSV Data information
      */
-    public function prepareMoviesDataArray($field0, $field2, $field4, $field5, $field29) {
+    public function prepareMoviesDataArray($column0, $column2, $column4, $column5, $column29) {
         return "[<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;'movieID' => {$field0},<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;'addedUserID' => {$field2},<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;'updateUserID' => {$field4},<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;'siteID' => {$field5},<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'movieID' => {$column0},<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'addedUserID' => {$column2},<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'updateUserID' => {$column4},<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'siteID' => {$column5},<br>
                     &nbsp;&nbsp;&nbsp;&nbsp;'movieStatus' => 'active',<br>
                     &nbsp;&nbsp;&nbsp;&nbsp;'master_status' => 1,<br>
                     &nbsp;&nbsp;&nbsp;&nbsp;'publishedDate' => '2017-02-06 11:00:00', <br>
@@ -110,8 +110,8 @@ class HomeController extends Controller
                     &nbsp;&nbsp;&nbsp;&nbsp;'verified' => 1,<br>
                     &nbsp;&nbsp;&nbsp;&nbsp;'releaseDate' => '2017-02-06 11:00:00',<br>
                     &nbsp;&nbsp;&nbsp;&nbsp;'defaultPrice' => 1,<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;'movieFilename' => {$field29},<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;'modelID' => Model::where('slug', '{$field29}')->first()->modelID<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'movieFilename' => {$column29},<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'modelID' => Model::where('slug', '{$column29}')->first()->modelID<br>
                 ],<br>";
     }
 
