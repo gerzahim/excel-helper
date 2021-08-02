@@ -55,6 +55,7 @@ class HomeController extends Controller
                     $field29  = $data[$i][29];
 
                     $dataImported .= $this->prepareMoviesDataArray($field0, $field2, $field4, $field5, $field29);
+                    //$dataImported .= $this->getModelsFromMoviesID($field0);
                     //$dataImported .= $this->updateStatusLost($field0);
                     //$dataImported .= $this->UpdatesQOH($field0, $field1);
                     //$dataImported .= $this->InsertHistoryQOH($field0, $field1);
@@ -97,30 +98,29 @@ class HomeController extends Controller
      */
     public function prepareMoviesDataArray($field0, $field2, $field4, $field5, $field29) {
         return "[<br>
-                    'movieID' => {$field0},<br>
-                    'addedUserID' => {$field2},<br>
-                    'updateUserID' => {$field4},<br>
-                    'siteID' => {$field5},<br>
-                    'movieStatus' => 'active',<br>
-                    'master_status' => 1,<br>
-                    'publishedDate' => '2017-02-06 11:00:00', <br>
-                    'isPublished' => 1,<br>
-                    'loc' => 'web1',<br>
-                    'verified' => 1,<br>
-                    'releaseDate' => '2017-02-06 11:00:00',<br>
-                    'defaultPrice' => 1,<br>
-                    'movieFilename' => {$field29},<br>
-                    'modelID' => Model::where('slug', '{$field29}')->first()->modelID<br>
-                ],
-                ';<br>";
+                    &nbsp;&nbsp;&nbsp;&nbsp;'movieID' => {$field0},<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'addedUserID' => {$field2},<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'updateUserID' => {$field4},<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'siteID' => {$field5},<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'movieStatus' => 'active',<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'master_status' => 1,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'publishedDate' => '2017-02-06 11:00:00', <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'isPublished' => 1,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'loc' => 'web1',<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'verified' => 1,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'releaseDate' => '2017-02-06 11:00:00',<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'defaultPrice' => 1,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'movieFilename' => {$field29},<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;'modelID' => Model::where('slug', '{$field29}')->first()->modelID<br>
+                ],<br>";
     }
 
 
 
-    /**
+    /*
      * UPDATE Mysql , Makes individual list of UPDATE QUERYS For update Inventory
      */
-    public function getModelsFromMovies($movieID) {
+    public function getModelsFromMoviesID($movieID) {
         $sampleSQL= "SELECT * FROM `movies_models`
                 WHERE movieID IN (12297, 12298, 12299) ;";
         return "{$movieID},";
